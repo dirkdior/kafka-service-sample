@@ -1,3 +1,5 @@
+package akka.sample
+
 object KafkaServiceProtocol {
 
   sealed trait Command

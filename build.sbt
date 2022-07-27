@@ -9,8 +9,10 @@ val akkaHttpVersion = "10.2.6"
 val circeVersion    = "0.14.1"
 val alpakkaVersion  = "3.0.0"
 
-libraryDependencies += "com.typesafe.akka" %% "akka-actor-typed"     % akkaVersion
-libraryDependencies += "com.typesafe.akka" %% "akka-stream-kafka"    % alpakkaVersion
+resolvers += Resolver.bintrayRepo("cakesolutions", "maven")
+
+libraryDependencies += "com.typesafe.akka" %% "akka-actor-typed"  % akkaVersion
+libraryDependencies += "com.typesafe.akka" %% "akka-stream-kafka" % alpakkaVersion
 libraryDependencies ++= Seq(
   "io.circe" %% "circe-core",
   "io.circe" %% "circe-generic",

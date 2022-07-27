@@ -1,15 +1,16 @@
+package akka.sample
+
 import akka.actor.typed.ActorSystem
 import akka.kafka.ProducerSettings
 import akka.kafka.scaladsl.Producer
 import akka.stream.scaladsl.Source
-
+import io.circe.generic.auto._
+import io.circe.syntax._
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.serialization.StringSerializer
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{ Failure, Success }
-
-import io.circe.generic.auto._, io.circe.syntax._
 
 case class KafkaMsg(
   text: String,

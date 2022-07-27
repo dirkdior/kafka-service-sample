@@ -1,27 +1,26 @@
+package akka.sample
+
 import akka.NotUsed
 import akka.actor.ActorRef
-import akka.actor.typed.scaladsl.ActorContext
 import akka.actor.typed.ActorSystem
+import akka.actor.typed.scaladsl.ActorContext
 import akka.actor.typed.scaladsl.adapter._
-import akka.kafka.{ ConsumerSettings, KafkaConsumerActor, Subscriptions }
 import akka.kafka.scaladsl.Consumer
+import akka.kafka.{ ConsumerSettings, KafkaConsumerActor, Subscriptions }
 import akka.stream.scaladsl.{ Flow, Keep, Sink }
+import io.circe.generic.semiauto.deriveDecoder
+import io.circe.{ Decoder, parser }
+import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.apache.kafka.common.TopicPartition
 import org.apache.kafka.common.serialization.StringDeserializer
 
 import scala.concurrent.ExecutionContext.Implicits.global
-
-import io.circe.generic.semiauto.deriveDecoder
-import io.circe.{ Decoder, parser }
-
-import org.apache.kafka.clients.consumer.ConsumerRecord
-import org.apache.kafka.common.TopicPartition
-
 import scala.util.{ Failure, Success }
 
 class KafkaConsumerService(topic: KafkaTopic.KafkaTopicT)(
   context: ActorContext[KafkaServiceProtocol.Command]
 ) {
-  println("Starting KafkaConsumerService...")
+  println("Starting akka.sample.KafkaConsumerService...")
   private implicit val system: ActorSystem[KafkaServiceProtocol.Command] =
     context.system.asInstanceOf[ActorSystem[KafkaServiceProtocol.Command]]
   private implicit val kafkaMsgDecoder: Decoder[KafkaMsg]                = deriveDecoder
@@ -46,7 +45,7 @@ class KafkaConsumerService(topic: KafkaTopic.KafkaTopicT)(
       val payload   = record.value()
       val key       = record.key()
       val partition = record.partition()
-      println(s"[KafkaConsumerService]: payload $payload  Key: $key  partition $partition")
+      println(s"[akka.sample.KafkaConsumerService]: payload $payload  Key: $key  partition $partition")
       val kafkaMsg  = parser.decode[KafkaMsg](payload).toOption.get
       kafkaMsg
     }
@@ -55,9 +54,9 @@ class KafkaConsumerService(topic: KafkaTopic.KafkaTopicT)(
 
   result onComplete {
     case Success(value) =>
-      println("[KafkaConsumerService] Results from Consumer: " + value)
+      println("[akka.sample.KafkaConsumerService] Results from Consumer: " + value)
     case Failure(ex)    =>
-      println("[KafkaConsumerService] Ran into an error: " + ex.printStackTrace)
+      println("[akka.sample.KafkaConsumerService] Ran into an error: " + ex.printStackTrace)
   }
 
   def shutdownConsumer(): Unit = {

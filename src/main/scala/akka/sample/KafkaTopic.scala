@@ -1,3 +1,5 @@
+package akka.sample
+
 object KafkaTopic {
   sealed trait KafkaTopicT {
     val topicName: String

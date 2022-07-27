@@ -1,7 +1,8 @@
-import KafkaTopic.Greetings
+package akka.sample
 
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed._
+import akka.sample.KafkaTopic.Greetings
 
 object Main extends App {
   implicit val system: ActorSystem[KafkaServiceProtocol.Command] = ActorSystem(
